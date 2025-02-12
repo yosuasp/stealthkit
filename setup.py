@@ -1,0 +1,26 @@
+from setuptools import setup, find_packages
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setup(
+    name="stealthkit",
+    version="0.1.0",
+    author="Anil Sardiwal",
+    author_email="theonlyanil@gmail.com",
+    description="A stealthy HTTP request library with rotating user agents and proxy support",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/theonlyanil/stealth-requests",
+    packages=find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.6",
+    install_requires=[
+        "requests==2.32.3",
+        "fake-useragent==2.0.3"
+    ],
+) 
