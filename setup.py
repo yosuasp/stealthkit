@@ -11,7 +11,7 @@ setup(
     description="A stealthy HTTP request library with rotating user agents and proxy support",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/theonlyanil/stealth-requests",
+    url="https://github.com/theonlyanil/stealthkit",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

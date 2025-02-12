@@ -1,3 +1,28 @@
+Metadata-Version: 2.2
+Name: stealthkit
+Version: 0.1.0
+Summary: A stealthy HTTP request library with rotating user agents and proxy support
+Home-page: https://github.com/theonlyanil/stealthkit
+Author: Anil Sardiwal
+Author-email: theonlyanil@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests==2.32.3
+Requires-Dist: fake-useragent==2.0.3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # StealthKit
 
 A Python package for making stealthy HTTP requests with rotating user agents, proxies, and customizable headers.
@@ -20,10 +45,10 @@ pip install stealthkit
 ## Quick Start
 
 ```python
-from stealthkit import StealthRequests
+from stealthkit import StealthKit
 
 # Initialize with default settings
-stealth = StealthRequests()
+stealth = StealthKit()
 
 # Make a GET request
 response = stealth.get('https://api.example.com')
@@ -38,7 +63,7 @@ response = stealth.post('https://api.example.com/post', json=data)
 
 ```python
 # Initialize with custom settings
-stealth = StealthRequests(
+stealth = StealthKit(
     proxies=['http://proxy1:8080', 'http://proxy2:8080'],
     browsers=['chrome', 'firefox'],
     operating_systems=['windows', 'macos'],
@@ -54,7 +79,7 @@ response = stealth.get(
 
 ## API Reference
 
-### StealthRequests Class
+### StealthKit Class
 
 | Parameter | Type | Description |
 |-----------|------|-------------|

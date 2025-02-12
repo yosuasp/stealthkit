@@ -1,4 +1,4 @@
-from .stealth import StealthRequests
+from stealthkit.stealth import StealthRequests
 
 __version__ = "0.1.0"
 __all__ = ["StealthRequests"] 
