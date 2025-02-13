@@ -56,9 +56,10 @@ class StealthRequests:
         self.session.close()
 
 # Example Usage
-stealth = StealthRequests(use_cookies=True, browsers=['Chrome', 'Firefox'], os=['Windows', 'Linux'])
-stealth.set_proxies(["http://103.57.70.231:39143"])
-stealth.set_headers(referer="https://example.com")
-resp = stealth.get("https://example.com")
-if resp:
-    print(resp.status_code)
+if __name__ == "__main__":
+    stealth = StealthRequests(use_cookies=True, browsers=['Chrome', 'Firefox'], os=['Windows', 'Linux'])
+    stealth.set_proxies(["http://103.57.70.231:39143"])
+    stealth.set_headers(referer="https://example.com")
+    resp = stealth.get("https://example.com")
+    if resp:
+        print(resp.status_code)
