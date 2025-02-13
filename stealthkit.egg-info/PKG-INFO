@@ -10,7 +10,6 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
-License-File: LICENSE
 Requires-Dist: requests==2.32.3
 Requires-Dist: fake-useragent==2.0.3
 Dynamic: author
@@ -23,102 +22,71 @@ Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary
 
-# StealthKit
+StealthKit
+==========
 
-A Python package for making stealthy HTTP requests with rotating user agents, proxies, and customizable headers.
+StealthKit is a lightweight and customizable HTTP request engine designed to improve stealth and anti-bot evasion. It features dynamic user-agent rotation, proxy support, configurable headers, and optional cookie management to help developers make requests with minimal detection.
 
-## Installation
+Features
+--------
 
-```bash
+-   **Dynamic User-Agent Rotation** - Uses `fake_useragent` to generate realistic browser headers.
+-   **Proxy Support** - Easily integrate a list of proxies for IP rotation.
+-   **Customizable Headers** - Modify User-Agent and Referer dynamically.
+-   **Cookie Management** - Enable or disable cookies based on your needs.
+-   **Automatic Retries** - Retries failed requests to improve reliability.
+-   **Session Persistence** - Maintains session-based browsing behavior when needed.
+
+Installation
+------------
+
+```
 pip install stealthkit
+
 ```
 
-## Features
+Basic Usage
+-----------
 
-✨ **Automated Request Obfuscation**
-- 🔄 Rotating user agents
-- 🌐 Proxy support with auto-rotation
-- 🎭 Browser fingerprint randomization
-- 🍪 Smart cookie management
-- 📍 Dynamic referrer headers
-
-## Quick Start
-
-```python
+```
 from stealthkit import StealthRequests
 
-# Initialize with default settings
-stealth = StealthRequests()
+stealth = StealthRequests(use_cookies=True, browsers=['Chrome', 'Firefox'], os=['Windows', 'Linux'])
+response = stealth.get("https://example.com")
+print(response.status_code)
 
-# Make a GET request
-response = stealth.get('https://api.example.com')
-print(response.json())
-
-# POST request with automatic headers
-data = {'key': 'value'}
-response = stealth.post('https://api.example.com/post', json=data)
 ```
 
-## Advanced Configuration
+Advanced Usage
+--------------
 
-```python
-# Initialize with custom settings
-stealth = StealthRequests(
-    proxies=['http://proxy1:8080', 'http://proxy2:8080'],
-    browsers=['chrome', 'firefox'],
-    operating_systems=['windows', 'macos'],
-    use_cookies=True
-)
+### Custom Headers
 
-# Custom headers with request
-response = stealth.get(
-    'https://api.example.com',
-    headers={'Custom-Header': 'Value'}
-)
+```
+stealth.set_headers(user_agent="Mozilla/5.0", referer="https://example.com")
+
 ```
 
-## API Reference
+### Using Proxies
 
-### StealthRequests Class
+```
+stealth.set_proxies(["http://103.57.70.231:39143", "http://45.79.58.206:3128"])
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `proxies` | `List[str]` | List of proxy URLs |
-| `browsers` | `List[str]` | Browser types to emulate |
-| `operating_systems` | `List[str]` | OS types to emulate |
-| `use_cookies` | `bool` | Enable cookie persistence |
+```
 
-### Methods
+### Custom Requests
 
-- `.get(url, **kwargs)` - Make GET request
-- `.post(url, **kwargs)` - Make POST request
-- `.put(url, **kwargs)` - Make PUT request
-- `.delete(url, **kwargs)` - Make DELETE request
-- `.close()` - Close session
+```
+response = stealth.request("POST", "https://example.com", data={"key": "value"})
 
-## Requirements
+```
 
-- Python 3.7+
-- requests >= 2.32.3
-- fake-useragent >= 2.0.3
+Contributing
+------------
 
-## License
+Feel free to open issues or contribute to this repository by submitting a pull request!
 
-MIT License - See [LICENSE](LICENSE) file for details.
+License
+-------
 
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/name`)
-3. Commit changes (`git commit -am 'Add feature'`)
-4. Push branch (`git push origin feature/name`)
-5. Open Pull Request
-
-## Support
-
-- 📦 [PyPI Package](https://pypi.org/project/stealthkit/)
-- 📝 [Documentation](https://github.com/theonlyanil/stealthkit)
-- 🐛 [Issue Tracker](https://github.com/theonlyanil/stealthkit/issues)
-
----
-Created by [Anil Sardiwal](https://github.com/theonlyanil)
+MIT License

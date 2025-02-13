@@ -8,6 +8,7 @@ setup(
     version="0.1.0",
     author="Anil Sardiwal",
     author_email="theonlyanil@gmail.com",
+    license_files = ('LICENSE'),
     description="A stealthy HTTP request library with rotating user agents and proxy support",
     long_description=long_description,
     long_description_content_type="text/markdown",
