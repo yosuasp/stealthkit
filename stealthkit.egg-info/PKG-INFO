@@ -45,10 +45,10 @@ pip install stealthkit
 ## Quick Start
 
 ```python
-from stealthkit import StealthKit
+from stealthkit import StealthRequests
 
 # Initialize with default settings
-stealth = StealthKit()
+stealth = StealthRequests()
 
 # Make a GET request
 response = stealth.get('https://api.example.com')
@@ -63,7 +63,7 @@ response = stealth.post('https://api.example.com/post', json=data)
 
 ```python
 # Initialize with custom settings
-stealth = StealthKit(
+stealth = StealthRequests(
     proxies=['http://proxy1:8080', 'http://proxy2:8080'],
     browsers=['chrome', 'firefox'],
     operating_systems=['windows', 'macos'],
@@ -79,7 +79,7 @@ response = stealth.get(
 
 ## API Reference
 
-### StealthKit Class
+### StealthRequests Class
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
