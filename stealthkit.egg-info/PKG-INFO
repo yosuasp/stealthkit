@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: stealthkit
-Version: 0.1.0
+Version: 0.1.2
 Summary: A stealthy HTTP request library with rotating user agents and proxy support
 Home-page: https://github.com/theonlyanil/stealthkit
 Author: Anil Sardiwal
@@ -22,71 +22,86 @@ Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary
 
-StealthKit
-==========
+# StealthKit
 
-StealthKit is a lightweight and customizable HTTP request engine designed to improve stealth and anti-bot evasion. It features dynamic user-agent rotation, proxy support, configurable headers, and optional cookie management to help developers make requests with minimal detection.
+## Overview
 
-Features
---------
+`StealthKit` is a Python module that provides a stealthy session handler for web scraping and automated requests. It mimics real user behavior by rotating user agents, setting referers, handling cookies, managing proxies, and implementing retry logic.
 
--   **Dynamic User-Agent Rotation** - Uses `fake_useragent` to generate realistic browser headers.
--   **Proxy Support** - Easily integrate a list of proxies for IP rotation.
--   **Customizable Headers** - Modify User-Agent and Referer dynamically.
--   **Cookie Management** - Enable or disable cookies based on your needs.
--   **Automatic Retries** - Retries failed requests to improve reliability.
--   **Session Persistence** - Maintains session-based browsing behavior when needed.
+## Features
 
-Installation
-------------
+- **User-Agent Rotation**: Automatically rotates user agents from Chrome, Edge, and Safari across different OS platforms (Windows, MacOS, Linux).
+- **Random Referer Selection**: Simulates real browsing behavior by sending requests with randomized referers from search engines.
+- **Cookie Handling**: Fetches and stores cookies from specified URLs to maintain session persistence.
+- **Proxy Support**: Allows requests to be routed through a provided proxy.
+- **Retry Logic**: Retries failed requests up to three times before giving up.
+- **RESTful Requests**: Supports GET, POST, PUT, and DELETE methods with automatic proxy integration.
 
-```
+## Installation
+
+```sh
 pip install stealthkit
-
 ```
 
-Basic Usage
------------
+## Basic Usage
 
-```
-from stealthkit import StealthRequests
+```python
+from stealthkit import StealthSession
 
-stealth = StealthRequests(use_cookies=True, browsers=['Chrome', 'Firefox'], os=['Windows', 'Linux'])
-response = stealth.get("https://example.com")
-print(response.status_code)
+# Create a stealth session
+sr = StealthSession()
 
-```
+# Fetch cookies from a base URL
+sr.fetch_cookies("https://www.example.com")
 
-Advanced Usage
---------------
+# Make a GET request
+response = sr.get("https://www.example.com/api")
 
-### Custom Headers
-
-```
-stealth.set_headers(user_agent="Mozilla/5.0", referer="https://example.com")
-
-```
-
-### Using Proxies
-
-```
-stealth.set_proxies(["http://103.57.70.231:39143", "http://45.79.58.206:3128"])
-
+# Print the response JSON if successful
+if response:
+    print(response.json())
+else:
+    print("Failed to fetch data")
 ```
 
-### Custom Requests
+## Advanced Usage
 
+### 1. Custom Headers
+```python
+custom_headers = {
+    "Referer": "https://www.example.com",
+    "Accept": "application/json",
+}
+sr.set_headers(custom_headers)
 ```
-response = stealth.request("POST", "https://example.com", data={"key": "value"})
 
+### 2. Using Proxies
+```python
+proxies = {"http": "http://proxy.example.com:8080", "https": "https://proxy.example.com:8080"}
+sr = StealthSession(proxies=proxies)
 ```
 
-Contributing
-------------
+### 3. Fetching Data with Custom Headers
+```python
+sr.fetch_cookies("https://www.example.com")
+custom_headers = {"User-Agent": "Custom-UA"}
+sr.set_headers(custom_headers)
+response = sr.get("https://www.example.com/api")
+print(response.text)
+```
 
-Feel free to open issues or contribute to this repository by submitting a pull request!
+### 4. Handling Different HTTP Methods
+```python
+sr.post("https://www.example.com/api", json={"key": "value"})
+sr.put("https://www.example.com/api", json={"key": "updated_value"})
+sr.delete("https://www.example.com/api")
+```
 
-License
--------
+### 5. Clearing Cookies
+```python
+sr.clear_cookies()
+```
 
-MIT License
+## License
+This project is licensed under the MIT License.
+

@@ -1,65 +1,88 @@
-import random
 import requests
+import random
 from fake_useragent import UserAgent
 
-class StealthRequests:
-    def __init__(self, use_cookies=False, browsers=None, os=None):
+class StealthSession:
+    def __init__(self, proxies=None):
         self.session = requests.Session()
-        try:
-            self.ua = UserAgent(browsers=browsers or ['Chrome', 'Edge', 'Safari'], os=os or ['Windows', 'MacOS', 'Linux'])
-        except:
-            self.ua = None  # Fallback in case fake_useragent fails
-        self.proxies = []
-        self.use_cookies = use_cookies
-        self.headers = {
-            'User-Agent': self.ua.random if self.ua else "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-            'Referer': random.choice(['https://google.com', 'https://bing.com', 'https://duckduckgo.com']),
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive'
+        self.user_agent = UserAgent()
+        self.default_headers = {
+            "User-Agent": UserAgent(browsers=['Chrome', 'Edge', 'Safari'], os=['Windows', 'MacOS', 'Linux']).random,
+            "Referer": self._get_random_referer(),
         }
-    
-    def set_headers(self, user_agent=None, referer=None):
-        self.headers['User-Agent'] = user_agent or (self.ua.random if self.ua else self.headers['User-Agent'])
-        self.headers['Referer'] = referer or self.headers['Referer']
-    
-    def set_proxies(self, proxies):
+        self.session.headers.update(self.default_headers)
         self.proxies = proxies
+        self.cookies = None
     
-    def get_proxy(self):
-        return random.choice(self.proxies) if self.proxies else None
+    def _get_random_referer(self):
+        referers = [
+            "https://www.google.com/",
+            "https://www.bing.com/",
+            "https://www.yahoo.com/",
+            "https://duckduckgo.com/"
+        ]
+        return random.choice(referers)
+
+    def set_headers(self, additional_headers):
+        self.session.headers.update(additional_headers)
     
-    def request(self, method, url, retries=3, timeout=10, **kwargs):
+    def fetch_cookies(self, base_url):
+        response = self.session.get(base_url, proxies=self.proxies)
+        if response.status_code == 200:
+            self.cookies = response.cookies
+            self.session.cookies.update(self.cookies)
+    
+    def clear_cookies(self):
+        self.session.cookies.clear()
+        self.cookies = None
+
+    def request(self, method, url, **kwargs):
+        if self.proxies:
+            kwargs["proxies"] = self.proxies
+        
+        retries = 3
         for _ in range(retries):
-            proxy = self.get_proxy()
-            kwargs.setdefault('headers', self.headers)
-            
-            if proxy:
-                kwargs.setdefault('proxies', {'http': proxy, 'https': proxy})
-            
-            if not self.use_cookies:
-                self.session.cookies.clear()
-            
             try:
-                return self.session.request(method, url, timeout=timeout, **kwargs)
-            except requests.RequestException as e:
-                print(f"Request failed: {e}, Retrying...")
+                response = self.session.request(method, url, **kwargs)
+                return response
+            except requests.RequestException:
+                pass
         return None
-    
+
     def get(self, url, **kwargs):
-        return self.request('GET', url, **kwargs)
+        return self.request("GET", url, **kwargs)
     
     def post(self, url, **kwargs):
-        return self.request('POST', url, **kwargs)
+        return self.request("POST", url, **kwargs)
     
-    def close(self):
-        self.session.close()
+    def put(self, url, **kwargs):
+        return self.request("PUT", url, **kwargs)
+    
+    def delete(self, url, **kwargs):
+        return self.request("DELETE", url, **kwargs)
 
-# Example Usage
+
 if __name__ == "__main__":
-    stealth = StealthRequests(use_cookies=True, browsers=['Chrome', 'Firefox'], os=['Windows', 'Linux'])
-    stealth.set_proxies(["http://103.57.70.231:39143"])
-    stealth.set_headers(referer="https://example.com")
-    resp = stealth.get("https://example.com")
-    if resp:
-        print(resp.status_code)
+    sr = StealthSession()
+    nse_url = "https://www.nseindia.com/api/corporates-pit?index=equities"
+
+    custom_headers = {
+        "Referer": "https://www.nseindia.com",
+        "Accept": "application/json",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "method": "GET",
+        "path": "/api/corporates-pit?",
+        "scheme": "https",
+
+     }
+    
+    sr.fetch_cookies("https://www.nseindia.com")
+    sr.set_headers(custom_headers)
+    response = sr.get(nse_url)
+
+    if response:
+        print(response.json())  # Print stock data as JSON
+    else:
+        print("Failed to fetch stock data")
