@@ -3,8 +3,9 @@ import random
 from fake_useragent import UserAgent
 
 class StealthSession:
-    def __init__(self, proxies=None):
+    def __init__(self, proxies=None, retries=3):
         self.session = requests.Session()
+        self.retries = retries
         self.user_agent = UserAgent()
         self.default_headers = {
             "User-Agent": UserAgent(browsers=['Chrome', 'Edge', 'Safari'], os=['Windows', 'MacOS', 'Linux']).random,
@@ -40,8 +41,7 @@ class StealthSession:
         if self.proxies:
             kwargs["proxies"] = self.proxies
         
-        retries = 3
-        for _ in range(retries):
+        for _ in range(self.retries):
             try:
                 response = self.session.request(method, url, **kwargs)
                 return response

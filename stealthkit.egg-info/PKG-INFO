@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: stealthkit
-Version: 0.1.2
+Version: 0.1.3
 Summary: A stealthy HTTP request library with rotating user agents and proxy support
 Home-page: https://github.com/theonlyanil/stealthkit
 Author: Anil Sardiwal

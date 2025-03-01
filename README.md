@@ -57,7 +57,12 @@ proxies = {"http": "http://proxy.example.com:8080", "https": "https://proxy.exam
 sr = StealthSession(proxies=proxies)
 ```
 
-### 3. Fetching Data with Custom Headers
+### 3. Retries
+```python
+sr = StealthSession(retries=5)
+```
+
+### 4. Fetching Data with Custom Headers
 ```python
 sr.fetch_cookies("https://www.example.com")
 custom_headers = {"User-Agent": "Custom-UA"}
@@ -66,14 +71,14 @@ response = sr.get("https://www.example.com/api")
 print(response.text)
 ```
 
-### 4. Handling Different HTTP Methods
+### 5. Handling Different HTTP Methods
 ```python
 sr.post("https://www.example.com/api", json={"key": "value"})
 sr.put("https://www.example.com/api", json={"key": "updated_value"})
 sr.delete("https://www.example.com/api")
 ```
 
-### 5. Clearing Cookies
+### 6. Clearing Cookies
 ```python
 sr.clear_cookies()
 ```
