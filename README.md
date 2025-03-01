@@ -83,6 +83,21 @@ sr.delete("https://www.example.com/api")
 sr.clear_cookies()
 ```
 
+### 7. Retry using Tenacity (nightly)
+```python
+from tenacity import retry
+
+@retry
+def get_response(url):
+    sr = StealthSession()
+    response = sr.get(url)
+    return response.json()
+
+get_response("https://www.example.com/api")
+```
+
+
+
 ## License
 This project is licensed under the MIT License.
 
