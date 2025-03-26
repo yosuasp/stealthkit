@@ -28,9 +28,9 @@ class StealthSession:
         self.session.headers.update(additional_headers)
     
     def fetch_cookies(self, base_url):
-        response = self.session.get(base_url, proxies=self.proxies)
+        response = self.session.get(base_url, proxies=self.proxies, headers=self.default_headers)
         if response.status_code == 200:
-            self.cookies = response.cookies
+            self.cookies = dict(response.cookies)
             self.session.cookies.update(self.cookies)
     
     def clear_cookies(self):
@@ -48,6 +48,8 @@ class StealthSession:
             except requests.RequestException:
                 pass
         return None
+
+        
 
     def get(self, url, **kwargs):
         return self.request("GET", url, **kwargs)
@@ -78,11 +80,15 @@ if __name__ == "__main__":
 
      }
     
-    sr.fetch_cookies("https://www.nseindia.com")
     sr.set_headers(custom_headers)
+    sr.fetch_cookies("https://www.nseindia.com/companies-listing/corporate-filings-insider-trading")
     response = sr.get(nse_url)
+    print(sr.session.cookies)
 
+
+    """
     if response:
         print(response.json())  # Print stock data as JSON
     else:
         print("Failed to fetch stock data")
+    """

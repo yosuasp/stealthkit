@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="stealthkit",
-    version="0.1.3",
+    version="0.1.4",
     author="Anil Sardiwal",
     author_email="theonlyanil@gmail.com",
     license_files = ('LICENSE'),
