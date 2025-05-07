@@ -1,4 +1,4 @@
-import requests
+import curl_cffi.requests as requests
 import random
 from fake_useragent import UserAgent
 
@@ -8,12 +8,20 @@ class StealthSession:
         self.retries = retries
         self.user_agent = UserAgent()
         self.default_headers = {
-            "User-Agent": UserAgent(browsers=['Chrome', 'Edge', 'Safari'], os=['Windows', 'MacOS', 'Linux']).random,
+            "User-Agent": UserAgent(browsers=['Chrome'], os=['Windows', 'MacOS', 'Linux']).random,
             "Referer": self._get_random_referer(),
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
         }
         self.session.headers.update(self.default_headers)
         self.proxies = proxies
         self.cookies = None
+        
+        # Configure impersonate - this is specific to curl_cffi
+        self.session.impersonate = "chrome110"
     
     def _get_random_referer(self):
         referers = [
@@ -46,10 +54,9 @@ class StealthSession:
                 response = self.session.request(method, url, **kwargs)
                 return response
             except requests.RequestException:
-                pass
+                # time.sleep(1)  # Add a small delay between retries -- let's leave this on user to decide
+                continue
         return None
-
-        
 
     def get(self, url, **kwargs):
         return self.request("GET", url, **kwargs)
@@ -62,7 +69,6 @@ class StealthSession:
     
     def delete(self, url, **kwargs):
         return self.request("DELETE", url, **kwargs)
-
 
 if __name__ == "__main__":
     sr = StealthSession()
@@ -84,7 +90,7 @@ if __name__ == "__main__":
     sr.fetch_cookies("https://www.nseindia.com/companies-listing/corporate-filings-insider-trading")
     response = sr.get(nse_url)
     print(sr.session.cookies)
-
+    print(response.text)
 
     """
     if response:
