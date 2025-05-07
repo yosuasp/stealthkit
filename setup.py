@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="stealthkit",
-    version="1.0.1",
+    version="1.0.3",
     author="Anil Sardiwal",
     author_email="theonlyanil@gmail.com",
     license_files = ('LICENSE'),
@@ -21,7 +21,7 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "requests==2.32.3",
+        "curl-cffi==0.10.0",
         "fake-useragent==2.0.3"
     ],
 ) 
